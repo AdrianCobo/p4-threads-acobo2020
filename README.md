@@ -46,7 +46,7 @@ de lo que tenan programada. Es algo redundante pero nos sirve para ver que efect
 
 **A destacar:**
 
-1)En los programas cuya lógica requieren que el hilo ejecute un bucle infinito, al hacer join de ese hilo, saltan los siguientes warnings:
+1)En los programas que uso GPIO.wait_for_edge(), al salir con control+c salen los siguintes errores:
 
 ```python
 Traceback (most recent call last):
@@ -58,24 +58,8 @@ Traceback (most recent call last):
     elif lock.acquire(block, timeout):
 KeyboardInterrupt
 ```
-No he logrado saber a que se deben, por ello,utilizo la clase signal, la cual al utilizar el callback programado para salir nos deberia de 
-limpiar todos los hilos creados; pero, siempre que uso este método, me saltan los siguientes errores también:
-
-```python
-Traceback (most recent call last):
-  File "/home/pi/Desktop/practica4/p4-threads-acobo2020/interrupcionEdgeBueno.py", line 34, in <module>
-    hilo1.join()
-  File "/usr/lib/python3.7/threading.py", line 1032, in join
-    self._wait_for_tstate_lock()
-  File "/usr/lib/python3.7/threading.py", line 1048, in _wait_for_tstate_lock
-    elif lock.acquire(block, timeout):
-KeyboardInterrupt
-```
-
-Esos warnings no impiden el funcionamiento del programa y dejarían de salir si quitase el callback para salir. Esto no debería de tener 
-ningún problema pues al finalizar el programa con control+c, el sistema operativo deberia borrar los hilos creados por el programa, pero 
-prefiero mantener los warnings y asegurarme de que elimino los hilos pues es importante para el programador hacerse cargo de los hilos que 
-crea.
+Esto se debe a que el metodo en cuestion usa un testigo que es entregado al hilo que lo ejecuta, y al hacer una salida abrupta con control+c el sistema nos avisa de que no estamos soltando el 
+testigo del metodo correctamente.
 
 2)La lógica del programa sinInterrupcionesMejorado.py nos permite encender el led al mantener pulsado el botón, y apagarlo al soltar, pero en
 los programas InterrupcionesMejorado.py,InterrupcionesMejorado2.py y interrupcionEventMejorado.py tenemos que pulsar el botón correspondiente
