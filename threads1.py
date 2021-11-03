@@ -7,5 +7,4 @@ def tarea():
 
 hilo1 = threading.Thread(target=tarea)
 hilo1.start()
-
 print ("Hilo principal sigue su curso y termina")

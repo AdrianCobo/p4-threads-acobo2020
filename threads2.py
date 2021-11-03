@@ -4,7 +4,7 @@ import time
 def tarea (nombre):
   contador = 0
   while contador < 5:
-    time.sleep(0.3)
+    time.sleep(1)
     print (nombre + " ejecutando iteracion n.º " + str(contador))
     contador += 1
 
